@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <!-- TODO: see how the layout looks like after the fragment is not empty -->
+    <TextView
+        android:id="@+id/textDistance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/distance" />
+
+    <TextView
+        android:id="@+id/textGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gender" />
+
+    <TextView
+        android:id="@+id/textHeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/height" />
+
+    <TextView
+        android:id="@+id/textPace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pace" />
+
+    <TextView
+        android:id="@+id/textSteps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/steps" />
+</LinearLayout>

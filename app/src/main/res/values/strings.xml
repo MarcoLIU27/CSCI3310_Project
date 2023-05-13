@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CU Walk</string>
+    <string name="title_activity_maps">CU Walk</string>
+    <string name="show_path_and_walking_profile">Show Path and Walking Profile</string>
+    <string name="distance">Distance:</string>
+    <string name="gender">Gender:</string>
+    <string name="height">Height:</string>
+    <string name="pace">Pace:</string>
+    <string name="steps">Steps:</string>
+    <string name="route1">Route 1</string>
+    <string name="route2">Route 2</string>
+    <string name="route3">Route 3</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
