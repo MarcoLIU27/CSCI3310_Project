@@ -25,12 +25,34 @@ public class SelectPointActivity extends AppCompatActivity {
         //TextView textView =  findViewById(R.id.textView);
 
         // populate the list with some items
-        // Todo: 目前是hardcode
-        mItems.add("Item 1");
-        mItems.add("Item 2");
-        mItems.add("Item 3");
-        mItems.add("Item 4");
-        mItems.add("Item 5");
+        // Todo:
+        mItems.add("MTR Station");
+        mItems.add("Lee Woo Sing College");
+        mItems.add("Chan Chun Ha Hall - G/F");
+        mItems.add("Chan Chun Ha Hall - 10/F");
+        mItems.add("United College");
+        mItems.add("New Asia College");
+
+        mItems.add("Lee Shaw Kee Building - 3/F");
+        mItems.add("Lee Shaw Kee Building - UG/F");
+        mItems.add("University Library");
+        mItems.add("Science Center");
+        mItems.add("Mong Man Wai Building - 7/F");
+
+        mItems.add("Mong Man Wai Building - G/F");
+        mItems.add("Shaw College");
+        mItems.add("Fusion");
+        mItems.add("Engineer Building - 9/F");
+        mItems.add("Engineer Building - 4/F");
+
+        mItems.add("Engineer Building - G/F");
+        mItems.add("University Gym");
+        mItems.add("Chung Chi College");
+        mItems.add("Wu Ho Man Yuen Building");
+        mItems.add("Yasumoto Internation Academic Park");
+
+        mItems.add("Pommerenke Student Centre");
+        mItems.add("Chung Chi Teaching Buildings");
 
         // set up the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
