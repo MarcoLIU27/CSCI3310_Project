@@ -3,11 +3,17 @@ package edu.cuhk.csci3310.cuwalk;
 // Name: Haoyu Liu
 // SID: 1155141556
 //
+import android.Manifest;
+import android.content.Intent;
+import edu.cuhk.csci3310.cuwalk.sportRecord.SportRecordService;
+
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -48,6 +54,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "CUWalk";
@@ -63,6 +71,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_maps);
 
         // initialize a volley request queue for getting an online file
@@ -77,8 +86,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (savedInstanceState == null) {
             displaySearchFragment();
         }
+//        ActivityCompat.requestPermissions(this,
+//                new String[] { Manifest.permission.ACCESS_COARSE_LOCATION },
+//                PackageManager.PERMISSION_GRANTED);
+        ActivityCompat.requestPermissions(this,
+                new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                PackageManager.PERMISSION_GRANTED);
+//        startService(new Intent(getBaseContext(), SportRecordService.class));
+    }
 
-
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+//        stopService(new Intent(getBaseContext(), SportRecordService.class));
     }
 
     /**
