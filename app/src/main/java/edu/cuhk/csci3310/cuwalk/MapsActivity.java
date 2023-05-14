@@ -4,18 +4,13 @@ package edu.cuhk.csci3310.cuwalk;
 // SID: 1155141556
 //
 import android.Manifest;
-import android.content.Intent;
-import edu.cuhk.csci3310.cuwalk.sportRecord.SportRecordService;
 
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
@@ -27,11 +22,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -46,14 +43,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 // Importing Arrays class from the utility class
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -126,7 +119,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Default marker and camera zoom, you don't have to modify the following
         // Add a marker in Campus and move the camera
         LatLng home = new LatLng(22.419871, 114.206169);
-        mMap.addMarker(new MarkerOptions().position(home).title("Marker in CUHK"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 15));
     }
 
@@ -216,6 +208,55 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
             mRequestQueue.add(jsonObjectRequest);
         }
+    }
+
+    public void executeAddMarker(LatLng position, String title, String snippet){
+        addMarker(position, title, snippet);
+    }
+
+    private void addMarker(LatLng position, String title, String snippet){
+        // 创建标记选项
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(position)
+                .title(title)
+                .snippet(snippet);
+
+        // 添加标记到地图
+        Marker marker = mMap.addMarker(markerOptions);
+
+        // 设置信息窗口适配器到标记上
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                // 创建信息窗口布局
+                View view = getLayoutInflater().inflate(R.layout.info_window_layout, null);
+
+                // 设置标题和内容
+                TextView titleTextView = view.findViewById(R.id.titleTextView);
+                titleTextView.setText(marker.getTitle());
+
+                TextView snippetTextView = view.findViewById(R.id.snippetTextView);
+                snippetTextView.setText(marker.getSnippet());
+
+                return view;
+            }
+        });
+
+        // 设置地图的标记点击监听器
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                // 显示信息窗口
+                marker.showInfoWindow();
+                return true;
+            }
+        });
+
     }
 
     private void displayPathProfile(JSONObject jsonObject) {

@@ -29,6 +29,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import edu.cuhk.csci3310.cuwalk.MapsActivity;
 
 import java.util.ArrayList;
@@ -48,6 +51,10 @@ public class SearchFragment extends Fragment {
     private String mEndParam = "Select a ending point";
     private String mSelectedStart;
     private String mSelectedEnd;
+    LatLng latlng_lsk = new LatLng(22.419790153230732, 114.20395791170668);
+    LatLng latlng_mmw = new LatLng(22.41971262166917, 114.20926385431979);
+    LatLng latlng_cch = new LatLng(22.421907723921763, 114.20480660903495);
+    LatLng latlng_erb = new LatLng(22.418134340970138, 114.20790757369053);
 
     private void plotPath(int a, int b)
     {
@@ -104,8 +111,30 @@ public class SearchFragment extends Fragment {
         // a is start point, b is end point
         // Frontend optional Todo: 根据特殊的a b的值显示额外内容，比如a b是同一座楼不同楼层，显示需要从几楼坐电梯到几楼
         //电梯ab如下: (6,7) (7,6) , (11,10) (10,11) , (2,3) (2,3) ,(14,15) (15,14) ,(14,16) (16,14) ,(15,16) (16,15)
-        if ( ((a==6)&&(b==7)) ||  ((a==7)&&(b==6)) )
-            ((MapsActivity) getActivity()).executeJsonParseFromUri("walk20");
+        if ( ((a==6)&&(b==7)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_lsk , "Taking the Elevator", "Please take the elevator of Lee Shaw Kee Building from 3/F to UG/F");
+        if ( ((a==7)&&(b==6)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_lsk , "Taking the Elevator", "Please take the elevator of Lee Shaw Kee Building from UG/F to 3/F");
+        if ( ((a==11)&&(b==10)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_mmw , "Taking the Elevator", "Please take the elevator of Mong Man Wai Building from G/F to 7/F");
+        if ( ((a==10)&&(b==11)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_mmw , "Taking the Elevator", "Please take the elevator of Lee Shaw Kee Building from 7/F to G/F");
+        if ( ((a==2)&&(b==3)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_cch , "Taking the Elevator", "Please take the elevator of Chan Chun Ha Building from G/F to 10/F");
+        if ( ((a==3)&&(b==2)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_cch , "Taking the Elevator", "Please take the elevator of Chan Chun Ha Building from 10/F to G/F");
+        if ( ((a==14)&&(b==15)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_erb , "Taking the Elevator", "Please take the elevator of Engineering Building from 9/F to 4/F");
+        if ( ((a==15)&&(b==14)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_erb , "Taking the Elevator", "Please take the elevator of Engineering Building from 4/F to 9/F");
+        if ( ((a==14)&&(b==16)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_erb , "Taking the Elevator", "Please take the elevator of Engineering Building from 9/F to G/F");
+        if ( ((a==16)&&(b==14)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_erb , "Taking the Elevator", "Please take the elevator of Engineering Building from G/F to 9/F");
+        if ( ((a==15)&&(b==16)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_erb , "Taking the Elevator", "Please take the elevator of Engineering Building from 4/F to G/F");
+        if ( ((a==16)&&(b==15)) )
+            ((MapsActivity) getActivity()).executeAddMarker( latlng_erb , "Taking the Elevator", "Please take the elevator of Engineering Building from G/F to 4/F");
     }
 
     private final ActivityResultLauncher<Intent> mStartSelectActivityForStartPoint = registerForActivityResult(
