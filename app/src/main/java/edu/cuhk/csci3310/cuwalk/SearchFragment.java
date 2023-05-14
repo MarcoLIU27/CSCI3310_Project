@@ -32,6 +32,7 @@ import androidx.fragment.app.ListFragment;
 import edu.cuhk.csci3310.cuwalk.MapsActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -103,6 +104,8 @@ public class SearchFragment extends Fragment {
         // a is start point, b is end point
         // Frontend optional Todo: 根据特殊的a b的值显示额外内容，比如a b是同一座楼不同楼层，显示需要从几楼坐电梯到几楼
         //电梯ab如下: (6,7) (7,6) , (11,10) (10,11) , (2,3) (2,3) ,(14,15) (15,14) ,(14,16) (16,14) ,(15,16) (16,15)
+        if ( ((a==6)&&(b==7)) ||  ((a==7)&&(b==6)) )
+            ((MapsActivity) getActivity()).executeJsonParseFromUri("walk20");
     }
 
     private final ActivityResultLauncher<Intent> mStartSelectActivityForStartPoint = registerForActivityResult(
@@ -180,7 +183,12 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //String url = "http://example.com/data.json";
-                //Todo:
+                //
+                // remove the path plotted
+                if (MapsActivity.isPolylineDisplayed) {
+                    ((MapsActivity) requireActivity()).removePolyline();
+                }
+
                 EdgeWeightedDigraph g = new EdgeWeightedDigraph(23);
                 DirectedEdge e1 = new DirectedEdge(1,2,1.25); DirectedEdge e2 = new DirectedEdge(2,1,0.75);
                 DirectedEdge e3 = new DirectedEdge(12,2,6.75); DirectedEdge e4 = new DirectedEdge(2,12,6.25);
@@ -236,100 +244,101 @@ public class SearchFragment extends Fragment {
                 int startNo = -1;
                 int endNo = -1;
 
-                if(mSelectedStart == "MTR Station")
+                if(Objects.equals(mSelectedStart, "MTR Station"))
                     startNo = 0;
-                else if(mSelectedStart == "Lee Woo Sing College")
+                else if(Objects.equals(mSelectedStart, "Lee Woo Sing College"))
                     startNo = 1;
-                else if(mSelectedStart == "Chan Chun Ha Hall - G/F")
+                else if(Objects.equals(mSelectedStart, "Chan Chun Ha Hall - G/F"))
                     startNo = 2;
-                else if(mSelectedStart == "Chan Chun Ha Hall - 10/F")
+                else if(Objects.equals(mSelectedStart, "Chan Chun Ha Hall - 10/F"))
                     startNo = 3;
-                else if(mSelectedStart == "United College")
+                else if(Objects.equals(mSelectedStart, "United College"))
                     startNo = 4;
-                else if(mSelectedStart == "New Asia College")
+                else if(Objects.equals(mSelectedStart, "New Asia College"))
                     startNo = 5;
-                else if(mSelectedStart == "Lee Shaw Kee Building - 3/F")
+                else if(Objects.equals(mSelectedStart, "Lee Shaw Kee Building - 3/F"))
                     startNo = 6;
-                else if(mSelectedStart == "Lee Shaw Kee Building - UG/F")
+                else if(Objects.equals(mSelectedStart, "Lee Shaw Kee Building - UG/F"))
                     startNo = 7;
-                else if(mSelectedStart == "University Library")
+                else if(Objects.equals(mSelectedStart, "University Library"))
                     startNo = 8;
-                else if(mSelectedStart == "Science Center")
+                else if(Objects.equals(mSelectedStart, "Science Center"))
                     startNo = 9;
-                else if(mSelectedStart == "Mong Man Wai Building - 7/F")
+                else if(Objects.equals(mSelectedStart, "Mong Man Wai Building - 7/F"))
                     startNo = 10;
-                else if(mSelectedStart == "Mong Man Wai Building - G/F")
+                else if(Objects.equals(mSelectedStart, "Mong Man Wai Building - G/F"))
                     startNo = 11;
-                else if(mSelectedStart == "Shaw College")
+                else if(Objects.equals(mSelectedStart, "Shaw College"))
                     startNo = 12;
-                else if(mSelectedStart == "Fusion")
+                else if(Objects.equals(mSelectedStart, "Fusion"))
                     startNo = 13;
-                else if(mSelectedStart == "Engineer Building - 9/F")
+                else if(Objects.equals(mSelectedStart, "Engineer Building - 9/F"))
                     startNo = 14;
-                else if(mSelectedStart == "Engineer Building - 4/F")
+                else if(Objects.equals(mSelectedStart, "Engineer Building - 4/F"))
                     startNo = 15;
-                else if(mSelectedStart == "Engineer Building - G/F")
+                else if(Objects.equals(mSelectedStart, "Engineer Building - G/F"))
                     startNo = 16;
-                else if(mSelectedStart == "University Gym")
+                else if(Objects.equals(mSelectedStart, "University Gym"))
                     startNo = 17;
-                else if(mSelectedStart == "Chung Chi College")
+                else if(Objects.equals(mSelectedStart, "Chung Chi College"))
                     startNo = 18;
-                else if(mSelectedStart == "Wu Ho Man Yuen Building")
+                else if(Objects.equals(mSelectedStart, "Wu Ho Man Yuen Building"))
                     startNo = 19;
-                else if(mSelectedStart == "Yasumoto Internation Academic Park")
+                else if(Objects.equals(mSelectedStart, "Yasumoto Internation Academic Park"))
                     startNo = 20;
-                else if(mSelectedStart == "Pommerenke Student Centre")
+                else if(Objects.equals(mSelectedStart, "Pommerenke Student Centre"))
                     startNo = 21;
-                else if(mSelectedStart == "Chung Chi Teaching Buildings")
+                else if(Objects.equals(mSelectedStart, "Chung Chi Teaching Buildings"))
                     startNo = 22;
 
-                if(mSelectedEnd == "MTR Station")
+                if(Objects.equals(mSelectedEnd, "MTR Station"))
                     endNo = 0;
-                else if(mSelectedEnd == "Lee Woo Sing College")
+                else if(Objects.equals(mSelectedEnd, "Lee Woo Sing College"))
                     endNo = 1;
-                else if(mSelectedEnd == "Chan Chun Ha Hall - G/F")
+                else if(Objects.equals(mSelectedEnd, "Chan Chun Ha Hall - G/F"))
                     endNo = 2;
-                else if(mSelectedEnd == "Chan Chun Ha Hall - 10/F")
+                else if(Objects.equals(mSelectedEnd, "Chan Chun Ha Hall - 10/F"))
                     endNo = 3;
-                else if(mSelectedEnd == "United College")
+                else if(Objects.equals(mSelectedEnd, "United College"))
                     endNo = 4;
-                else if(mSelectedEnd == "New Asia College")
+                else if(Objects.equals(mSelectedEnd, "New Asia College"))
                     endNo = 5;
-                else if(mSelectedEnd == "Lee Shaw Kee Building - 3/F")
+                else if(Objects.equals(mSelectedEnd, "Lee Shaw Kee Building - 3/F"))
                     endNo = 6;
-                else if(mSelectedEnd == "Lee Shaw Kee Building - UG/F")
+                else if(Objects.equals(mSelectedEnd, "Lee Shaw Kee Building - UG/F"))
                     endNo = 7;
-                else if(mSelectedEnd == "University Library")
+                else if(Objects.equals(mSelectedEnd, "University Library"))
                     endNo = 8;
-                else if(mSelectedEnd == "Science Center")
+                else if(Objects.equals(mSelectedEnd, "Science Center"))
                     endNo = 9;
-                else if(mSelectedEnd == "Mong Man Wai Building - 7/F")
+                else if(Objects.equals(mSelectedEnd, "Mong Man Wai Building - 7/F"))
                     endNo = 10;
-                else if(mSelectedEnd == "Mong Man Wai Building - G/F")
+                else if(Objects.equals(mSelectedEnd, "Mong Man Wai Building - G/F"))
                     endNo = 11;
-                else if(mSelectedEnd == "Shaw College")
+                else if(Objects.equals(mSelectedEnd, "Shaw College"))
                     endNo = 12;
-                else if(mSelectedEnd == "Fusion")
+                else if(Objects.equals(mSelectedEnd, "Fusion"))
                     endNo = 13;
-                else if(mSelectedEnd == "Engineer Building - 9/F")
+                else if(Objects.equals(mSelectedEnd, "Engineer Building - 9/F"))
                     endNo = 14;
-                else if(mSelectedEnd == "Engineer Building - 4/F")
+                else if(Objects.equals(mSelectedEnd, "Engineer Building - 4/F"))
                     endNo = 15;
-                else if(mSelectedEnd == "Engineer Building - G/F")
+                else if(Objects.equals(mSelectedEnd, "Engineer Building - G/F"))
                     endNo = 16;
-                else if(mSelectedEnd == "University Gym")
+                else if(Objects.equals(mSelectedEnd, "University Gym"))
                     endNo = 17;
-                else if(mSelectedEnd == "Chung Chi College")
+                else if(Objects.equals(mSelectedEnd, "Chung Chi College"))
                     endNo = 18;
-                else if(mSelectedEnd == "Wu Ho Man Yuen Building")
+                else if(Objects.equals(mSelectedEnd, "Wu Ho Man Yuen Building"))
                     endNo = 19;
-                else if(mSelectedEnd == "Yasumoto Internation Academic Park")
+                else if(Objects.equals(mSelectedEnd, "Yasumoto Internation Academic Park"))
                     endNo = 20;
-                else if(mSelectedEnd == "Pommerenke Student Centre")
+                else if(Objects.equals(mSelectedEnd, "Pommerenke Student Centre"))
                     endNo = 21;
-                else if(mSelectedEnd == "Chung Chi Teaching Buildings")
+                else if(Objects.equals(mSelectedEnd, "Chung Chi Teaching Buildings"))
                     endNo = 22;
 
+                Log.d("SELECT", "startNo: " + startNo + ", endNo: " + endNo);
 
                //((MapsActivity) getActivity()).executeJsonParseFromUri("walk1");
 
@@ -339,10 +348,11 @@ public class SearchFragment extends Fragment {
                 Deque<DirectedEdge> edges = dsp.pathTo(endNo);
                 //打印输出
                 for (DirectedEdge edge : edges) {
-                    //System.out.println(edge.from() + "->" + edge.to() + ":" + edge.weight());
+                    System.out.println(edge.from() + "->" + edge.to() + ":" + edge.weight());
 
                     plotPath(edge.from(), edge.to());
                 }
+                MapsActivity.isPolylineDisplayed = true;
             }
         });
 

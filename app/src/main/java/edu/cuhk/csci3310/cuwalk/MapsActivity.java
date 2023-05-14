@@ -65,8 +65,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final String url = "https://www.cse.cuhk.edu.hk/~ypchui/csci3310/asg3/walk2.json";
     // TODO: add other attributes as needed
     private boolean isFragmentDisplayed = false;
+    public static boolean isPolylineDisplayed = false;
     private Polyline polyline;
     static final String STATE_FRAGMENT = "false";
+
+    double maxLat = Double.NEGATIVE_INFINITY;
+    double minLng = Double.POSITIVE_INFINITY;
+    double minLat = Double.POSITIVE_INFINITY;
+    double maxLng = Double.NEGATIVE_INFINITY;
+
+    LatLng leftUpMost = null;
+    LatLng rightBottomMost = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,10 +230,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //  4. create a fragment and display details on it
         try {
             // Get the JSON fields
-            int distance = jsonObject.getInt("distance");
-            String gender = jsonObject.getString("gender");
-            int height = jsonObject.getInt("height");
-            String pace = jsonObject.getString("pace");
+            JSONArray start = jsonObject.getJSONArray("start");
+            JSONArray end = jsonObject.getJSONArray("end");
             JSONArray latitudes = jsonObject.getJSONArray("Lat");
             JSONArray longitudes = jsonObject.getJSONArray("Lng");
 
@@ -242,47 +249,51 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             polyline = mMap.addPolyline(polylineOptions);
             Log.d("Response", "polylineOptions added");
 
+            double lat = start.getDouble(0);
+            double lng = start.getDouble(1);
 
-            // Zoom camera to enclose the path and its padding
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (LatLng latLng : path) {
-                builder.include(latLng);
+            if (lat > maxLat || (lat == maxLat && lng < minLng)) {
+                maxLat = lat;
+                minLng = lng;
+                leftUpMost = new LatLng(lat, lng);
             }
-            LatLngBounds bounds = builder.build();
+
+            if (lat < minLat || (lat == minLat && lng > maxLng)) {
+                minLat = lat;
+                maxLng = lng;
+                rightBottomMost = new LatLng(lat, lng);
+            }
+
+            double lat1 = start.getDouble(0);
+            double lng1 = start.getDouble(1);
+
+            if (lat1 > maxLat || (lat1 == maxLat && lng1 < minLng)) {
+                maxLat = lat1;
+                minLng = lng1;
+                leftUpMost = new LatLng(lat1, lng1);
+            }
+
+            if (lat1 < minLat || (lat1 == minLat && lng1 > maxLng)) {
+                minLat = lat1;
+                maxLng = lng1;
+                rightBottomMost = new LatLng(lat1, lng1);
+            }
+
+            // Create LatLng objects from the start and end arrays
+            LatLng startLatLng = leftUpMost;
+            LatLng endLatLng = rightBottomMost;
+
+            // Create a LatLngBounds object that includes the start and end points with padding
+            LatLngBounds bounds = new LatLngBounds.Builder()
+                    .include(startLatLng)
+                    .include(endLatLng)
+                    .build();
+
+            // Animate the camera to fit the LatLngBounds with padding
             int padding = 100;
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
             mMap.animateCamera(cameraUpdate);
 
-            //approximate distance based the length of the path segments
-            if (distance == 0){
-                int numPoints = latitudes.length();
-                double totalDistance = 0.0;
-
-                for (int i = 1; i < numPoints; i++) {
-                    double lat1 = latitudes.getDouble(i-1);
-                    double lon1 = longitudes.getDouble(i-1);
-                    double lat2 = latitudes.getDouble(i);
-                    double lon2 = longitudes.getDouble(i);
-
-                    double R = 6371e3; // Earth's radius in meters
-                    double phi1 = Math.toRadians(lat1);
-                    double phi2 = Math.toRadians(lat2);
-                    double deltaPhi = Math.toRadians(lat2-lat1);
-                    double deltaLambda = Math.toRadians(lon2-lon1);
-
-                    double a = Math.sin(deltaPhi/2) * Math.sin(deltaPhi/2) +
-                            Math.cos(phi1) * Math.cos(phi2) *
-                                    Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
-                    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-                    double segmentDistance = R * c;
-                    totalDistance += segmentDistance;
-                }
-                distance = (int) totalDistance;
-            }
-
-            // Create a fragment of ProfileFragment class and display details on it
-            //displayFragment(distance, gender, height, pace);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -333,17 +344,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Get the FragmentManager.
         FragmentManager fragmentManager = getSupportFragmentManager();
         // Check to see if the fragment is already showing.
-        ProfileFragment profileFragment = (ProfileFragment) fragmentManager
+        SearchFragment searchFragment = (SearchFragment) fragmentManager
                 .findFragmentById(R.id.fragment_container);
-        if (profileFragment != null) {
+        if (searchFragment != null) {
             // Create and commit the transaction to remove the fragment.
             FragmentTransaction fragmentTransaction =
                     fragmentManager.beginTransaction();
-            fragmentTransaction.remove(profileFragment).commit();
+            fragmentTransaction.remove(searchFragment).commit();
         }
         // remove the path plotted
         polyline.remove();
+
         // Set boolean flag to indicate fragment is closed.
         isFragmentDisplayed = false;
+    }
+
+    public void removePolyline() {
+        // remove the path plotted
+        //polyline.remove();
+        mMap.clear(); // Clears all markers, polylines, and other shapes from the map.
+        Log.d("REMOVE", "polyline removed ");
+        maxLat = Double.NEGATIVE_INFINITY;
+        minLng = Double.POSITIVE_INFINITY;
+        minLat = Double.POSITIVE_INFINITY;
+        maxLng = Double.NEGATIVE_INFINITY;
+
+        leftUpMost = null;
+        rightBottomMost = null;
+        isPolylineDisplayed = false;
     }
 }
