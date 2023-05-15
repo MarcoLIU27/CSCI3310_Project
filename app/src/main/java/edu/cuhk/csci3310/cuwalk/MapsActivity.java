@@ -4,18 +4,14 @@ package edu.cuhk.csci3310.cuwalk;
 // SID: 1155141556
 //
 import android.Manifest;
-import android.content.Intent;
-import edu.cuhk.csci3310.cuwalk.sportRecord.SportRecordService;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
@@ -46,14 +42,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 // Importing Arrays class from the utility class
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
+import edu.cuhk.csci3310.cuwalk.sportRecord.SportRecordService;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -79,7 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map_record);
         mapFragment.getMapAsync(this);
 
         // Add SearchFragment
@@ -126,6 +120,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.route_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Change the map type based on the user's selection.
+        switch (item.getItemId()) {
+            case R.id.recorder:
+                Intent intent = new Intent(this,RecorderActivity.class);
+                // can use a string in quotation marks to replace the field "EXTRA_MESSAGE"
+                this.startActivity(intent);
+                return true;
+            case R.id.sport_history:
+//                jsonParseFromUri(url);
+                return true;
+        }
         return true;
     }
 

@@ -2,20 +2,39 @@ package edu.cuhk.csci3310.cuwalk.sportRecord;
 
 import android.util.Log;
 
-public class Timer extends Thread{
+public class Timer{
     private long startTime;
-    private long lastedTime;
-    @Override
-    public void run(){
-        startTime = System.currentTimeMillis();
-        while(true){
-            lastedTime = System.currentTimeMillis() - startTime;
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+    private long Duration;
+    private boolean timerEnabled = false;
+
+    private Thread t;
+    public Timer() {
+        t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                startTime = System.currentTimeMillis();
+                while (timerEnabled == true) {
+                    Duration = System.currentTimeMillis() - startTime;
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+//                    Log.i("appInfo", "" + Duration);
+                }
             }
-            Log.i("appInfo",""+lastedTime);
-        }
+        });
+    }
+
+    public void startTimer(){
+        timerEnabled = true;
+        t.start();
+    }
+
+    public long getStartTime(){
+        return startTime;
+    }
+    public Long getDuration(){
+        return Duration;
     }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/map_record"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/active_button"
+        android:layout_marginBottom="10dp"
+        tools:context=".RecorderActivity"
+        tools:layout="@layout/place_holder_maps" />
+
+    <Button
+        android:id="@+id/active_button"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="START" />
+
+    <TextView
+        android:id="@+id/title_time"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/active_button"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:text="Time:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/title_distance"
+        android:layout_width="100dp"
+        android:layout_height="27dp"
+        android:layout_below="@+id/title_time"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:text="Distance:"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/title_distance"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/active_button"
+        android:layout_toEndOf="@+id/title_distance"
+        android:text="0 m"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/title_time"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/active_button"
+        android:layout_toEndOf="@+id/title_time"
+        android:text="00:00:00"
+        android:textSize="20sp" />
+
+
+</RelativeLayout>

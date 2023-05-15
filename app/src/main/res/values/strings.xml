@@ -10,6 +10,8 @@
     <string name="route1">Route 1</string>
     <string name="route2">Route 2</string>
     <string name="route3">Route 3</string>
+    <string name="recorder">Sport recorder</string>
+    <string name="sport_history">Sport history</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
