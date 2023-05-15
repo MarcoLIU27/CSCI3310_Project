@@ -15,7 +15,6 @@
         tools:context=".MapsActivity"
         tools:layout="@layout/place_holder_maps" />
 
-    <!-- TODO: change the static fragment to a dynamic one to enable more control -->
         <FrameLayout xmlns:map="http://schemas.android.com/apk/res-auto"
             android:id="@+id/fragment_container"
             android:name="edu.cuhk.csci3310.cuwalk.ProfileFragment"

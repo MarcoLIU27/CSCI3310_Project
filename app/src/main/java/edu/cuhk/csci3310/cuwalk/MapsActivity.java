@@ -60,9 +60,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final String mAppFilePath = "/data/data/edu.cuhk.csci3310.cublossom/";
     private GoogleMap mMap;
     private RequestQueue mRequestQueue;
-    private final String url = "https://www.cse.cuhk.edu.hk/~ypchui/csci3310/asg3/walk2.json";
-    // TODO: add other attributes as needed
-    private boolean isFragmentDisplayed = false;
     public static boolean isPolylineDisplayed = false;
     private Polyline polyline;
     static final String STATE_FRAGMENT = "false";
@@ -127,7 +124,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 15));
     }
 
-    // TODO: override callbacks to create options menu for selecting routes
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -176,7 +172,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     /**
-     *  TODO: implementation extra utility method to
      *  a. parse a json obtained from a local file, or
      *  b. parse a json obtained from server
      *  c. to draw a path and display step info
@@ -363,15 +358,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    // TODO: override onBackPressed to handle a proper flow of app
     @Override
     public void onBackPressed() {
-        // TODO: update fragment and map
-        if (isFragmentDisplayed) {
-            // remove fragment and update map
-            closeFragment();
+        if (isPolylineDisplayed) {
+            // remove polyline and update map
             LatLng home = new LatLng(22.419871, 114.206169);
-            mMap.addMarker(new MarkerOptions().position(home).title("Marker in CUHK"));
+            removePolyline();
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, 15));
         } else {
             // quit app
@@ -379,17 +371,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    // TODO: add other methods or callbacks as needed
-    public void displayFragment(int distance, String gender, int height, String pace) {
-        ProfileFragment profileFragment = ProfileFragment.newInstance(distance, gender, height, pace);
-        Log.d("Fragment", "Init");
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, profileFragment)
-                .addToBackStack(null)
-                .commit();
-        // Set boolean flag to indicate fragment is open.
-        isFragmentDisplayed = true;
-    }
 
     public void displaySearchFragment() {
         SearchFragment searchFragment = SearchFragment.newInstance();
@@ -398,8 +379,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .add(R.id.fragment_container, searchFragment)
                 .addToBackStack(null)
                 .commit();
-        // Set boolean flag to indicate fragment is open.
-        isFragmentDisplayed = true;
     }
 
     public void closeFragment() {
@@ -417,8 +396,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // remove the path plotted
         polyline.remove();
 
-        // Set boolean flag to indicate fragment is closed.
-        isFragmentDisplayed = false;
     }
 
     public void removePolyline() {

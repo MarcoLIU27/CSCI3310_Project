@@ -109,8 +109,8 @@ public class SearchFragment extends Fragment {
         if ( ((a==22)&&(b==0)) ||  ((a==0)&&(b==22)) )
             ((MapsActivity) getActivity()).executeJsonParseFromUri("walk23");
         // a is start point, b is end point
-        // Frontend optional Todo: 根据特殊的a b的值显示额外内容，比如a b是同一座楼不同楼层，显示需要从几楼坐电梯到几楼
-        //电梯ab如下: (6,7) (7,6) , (11,10) (10,11) , (2,3) (2,3) ,(14,15) (15,14) ,(14,16) (16,14) ,(15,16) (16,15)
+        // 根据特殊的a b的值显示额外内容，比如a b是同一座楼不同楼层，显示需要从几楼坐电梯到几楼
+        // 电梯ab如下: (6,7) (7,6) , (11,10) (10,11) , (2,3) (2,3) ,(14,15) (15,14) ,(14,16) (16,14) ,(15,16) (16,15)
         if ( ((a==6)&&(b==7)) )
             ((MapsActivity) getActivity()).executeAddMarker( latlng_lsk , "Taking the Elevator", "Please take the elevator of Lee Shaw Kee Building from 3/F to UG/F");
         if ( ((a==7)&&(b==6)) )
@@ -211,8 +211,6 @@ public class SearchFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String url = "http://example.com/data.json";
-                //
                 // remove the path plotted
                 if (MapsActivity.isPolylineDisplayed) {
                     ((MapsActivity) requireActivity()).removePolyline();
@@ -369,19 +367,23 @@ public class SearchFragment extends Fragment {
 
                 Log.d("SELECT", "startNo: " + startNo + ", endNo: " + endNo);
 
-               //((MapsActivity) getActivity()).executeJsonParseFromUri("walk1");
+                if(startNo == -1 || endNo == -1)
+                    Log.e("TAG", "Invalid");
+                else
+                {
+                    //根据图g和顶点，构建PrimMST对象
+                    DijkstraSP dsp = new DijkstraSP(g, startNo);
+                    //获取起点到终点的最短路径
+                    Deque<DirectedEdge> edges = dsp.pathTo(endNo);
+                    //打印输出
+                    for (DirectedEdge edge : edges) {
+                        System.out.println(edge.from() + "->" + edge.to() + ":" + edge.weight());
 
-                //根据图g和顶点，构建PrimMST对象
-                DijkstraSP dsp = new DijkstraSP(g, startNo);
-                //获取起点到终点的最短路径
-                Deque<DirectedEdge> edges = dsp.pathTo(endNo);
-                //打印输出
-                for (DirectedEdge edge : edges) {
-                    System.out.println(edge.from() + "->" + edge.to() + ":" + edge.weight());
-
-                    plotPath(edge.from(), edge.to());
+                        plotPath(edge.from(), edge.to());
+                    }
+                    MapsActivity.isPolylineDisplayed = true;
                 }
-                MapsActivity.isPolylineDisplayed = true;
+
             }
         });
 
