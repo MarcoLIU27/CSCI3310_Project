@@ -57,7 +57,7 @@
         android:layout_marginEnd="10dp"
         android:layout_toStartOf="@+id/active_button"
         android:layout_toEndOf="@+id/title_distance"
-        android:text="0 m"
+        android:text="0.00 m"
         android:textSize="20sp" />
 
     <TextView

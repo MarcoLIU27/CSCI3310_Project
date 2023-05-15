@@ -1,7 +1,9 @@
 package edu.cuhk.csci3310.cuwalk.sportRecord;
 
 import android.util.Log;
-
+/**
+ * @author williw23 DAIWeican
+ */
 public class Timer{
     private long startTime;
     private long Duration;
@@ -34,6 +36,7 @@ public class Timer{
     public long getStartTime(){
         return startTime;
     }
+    public long getCurrentTime(){return System.currentTimeMillis();}
     public Long getDuration(){
         return Duration;
     }

@@ -140,12 +140,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Change the map type based on the user's selection.
         switch (item.getItemId()) {
             case R.id.recorder:
-                Intent intent = new Intent(this,RecorderActivity.class);
-                // can use a string in quotation marks to replace the field "EXTRA_MESSAGE"
-                this.startActivity(intent);
+                Intent intent1 = new Intent(this,RecorderActivity.class);
+                this.startActivity(intent1);
                 return true;
             case R.id.sport_history:
-//                jsonParseFromUri(url);
+                Intent intent2 = new Intent(this,HistoryActivity.class);
+                this.startActivity(intent2);
                 return true;
         }
         return true;

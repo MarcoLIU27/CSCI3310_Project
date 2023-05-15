@@ -12,6 +12,5 @@
     <string name="route3">Route 3</string>
     <string name="recorder">Sport recorder</string>
     <string name="sport_history">Sport history</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="clean_all_records">Clean all records</string>
 </resources>

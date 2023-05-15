@@ -21,6 +21,9 @@ import java.util.List;
 
 import edu.cuhk.csci3310.cuwalk.RecorderActivity;
 
+/**
+ * @author williw23 DAIWeican
+ */
 public class SportRecordService extends Service {
 
     public class MyBinder extends Binder {
@@ -36,7 +39,7 @@ public class SportRecordService extends Service {
     private double currentLng;
     private double distance = 0;
     // control the frequency of requesting location
-    private int update_interval = 250;
+    private int update_interval = 2000;
     private float update_min_distance_change = 1;
     private int latlng_pair_size = 0;
     // a flag to tell the activity that the info is a new appended location or the whole route
@@ -48,11 +51,20 @@ public class SportRecordService extends Service {
 
     // the binder is used for requesting detail info of the route
     private MyBinder binder = new MyBinder();
-    private LocationManager locationManager;
+    private LocationManager lm, lmForSingleRequest;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        lmForSingleRequest = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lmForSingleRequest.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                update_interval, update_min_distance_change, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {}
+                });
         Log.i("appInfo", "service created");
 //        startRecording();
     }
@@ -77,9 +89,10 @@ public class SportRecordService extends Service {
                 Log.i("appInfo", "no location permission");
                 return;
             }
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
             // ask for the location information in each second
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     update_interval, update_min_distance_change, new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
@@ -131,7 +144,7 @@ public class SportRecordService extends Service {
             return null;
         }
         try{
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location location = lmForSingleRequest.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             return new LatLng(location.getLatitude(), location.getLongitude());
         }catch(Exception e){
             return null;
